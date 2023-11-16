@@ -12,7 +12,8 @@ const generateToken = (id) => {
   };
   
   // Register User
-  const registerUser = asyncHandler(async (req, res) => {
+  const registerUser = asyncHandler(async (req, res) => 
+  {
     const { name, email, password } = req.body;
   
     // Validation
@@ -20,10 +21,10 @@ const generateToken = (id) => {
       res.status(400);
       throw new Error("Please fill in all required fields");
     }
-    // if (password.length < 6) {
-    //   res.status(400);
-    //   throw new Error("Password must be up to 6 characters");
-    // }
+    if (password.length < 6) {
+      res.status(400);
+      throw new Error("Password must be up to 6 characters");
+    }
   
     // Check if user email already exists
     const userExists = await User.findOne({ email });
@@ -58,7 +59,7 @@ const generateToken = (id) => {
     });
   
     if (user) {
-      const { _id, name, email, photo, phone, bio } = user;
+      const { _id, name, email, photo, phone, bio, password } = user;
       res.status(201).json({
         _id,
         name,
@@ -67,6 +68,7 @@ const generateToken = (id) => {
         phone,
         bio,
         token,
+        password
       });
     } else {
       res.status(400);
@@ -76,4 +78,64 @@ const generateToken = (id) => {
   
 
 
-  module.exports = {registerUser};
+ const loginUser = asyncHandler(
+  async(req, res) => {
+const {email, password} = req.body
+if(!email || !password){
+  res.status(400)
+  throw new Error("Please fill all the requirements")
+}
+
+// check if user exists
+
+const user = await User.findOne({email})
+if(!user){
+  res.status(400)
+  throw new Error("User doesn't exist")
+}
+
+
+//user exists
+
+const passwordIsCorrect = await bcrypt.compare(password, user.password)
+
+if(passwordIsCorrect){
+// Generate Token
+const token = generateToken(user.id) 
+
+// Send HTTP-only cookie
+
+  res.cookie("token", token, {
+  path: "/",
+  httpOnly: true,
+  expires: new Date(Date.now() + 1000 * 86400), // 1 day
+  sameSite: "none",
+  secure: true,
+});
+}
+
+if(user && passwordIsCorrect){
+  const { _id, name, email, photo, phone, bio, password, token } = user;
+  res.status(200).json({
+    _id,
+    name,
+    email,
+    photo,
+    phone,
+    bio,
+    token,
+    password
+
+  });
+
+}else{
+  res.status(400)
+  throw new Error("err err")
+}
+  }
+
+
+ )
+
+
+  module.exports = {registerUser, loginUser};
