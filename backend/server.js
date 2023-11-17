@@ -6,6 +6,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const userRoute = require("./routes/userRoute");
 const errorHandler = require("./middleware/errorMiddleware");
+const authMiddleware = require("./middleware/authMiddleware");
 
 
 const app = express();
@@ -16,7 +17,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use(cors())
 
 
 // Routes Middleware
@@ -30,8 +31,9 @@ app.get("/", (req, res) => {
   
   // Error Middleware
   app.use(errorHandler);
+  app.use(authMiddleware)
   // connect to db
-  const PORT = process.env.PORT || 5000;
+  const PORT = process.env.PORT || 8000;
   mongoose
     .connect(process.env.MONGO_URI)
     .then(() => {
