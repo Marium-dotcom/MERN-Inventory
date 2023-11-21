@@ -118,4 +118,71 @@ const getSingleProduct = asyncHandler(async (req, res, next) => {
   })
 
 
-  module.exports = {createProduct, getProduct, getSingleProduct, deleteSingleProduct}
+  
+// update product
+const updateProduct = asyncHandler(async (req, res, next) => {
+  const { name, sku, category, quantity, price, description } = req.body;
+  const { id } = req.params;
+  const product = await Product.findById(id);
+
+  if (!product) {
+    res.status(404);
+    throw new Error("Product not found");
+  }
+
+  // Match product to its user
+  if (product.user.toString() !== req.user.id) {
+    res.status(401);
+    throw new Error("User not authorized");
+  }
+
+  // handle image upload
+  let fileData = [];
+
+  if (req.files && req.files.length > 0) {
+    // Save each image to Cloudinary
+    const uploadPromises = req.files.map(async (file) => {
+      const uploadFile = await cloudinary.uploader.upload(file.path, {
+        folder: "Stock",
+        resource_type: "image",
+      });
+
+      return {
+        fileName: file.originalname,
+        filePath: uploadFile.secure_url,
+        fileType: file.mimetype,
+        fileSize: fileSizeFormatter(file.size, 2),
+      };
+    });
+
+    // Wait for all uploads to complete
+    fileData = await Promise.all(uploadPromises);
+  } else {
+    // No new images uploaded, retain existing images
+    fileData = product.images || [];
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    { _id: id },
+    {
+      name,
+      sku,
+      category,
+      quantity,
+      price,
+      description,
+      images: fileData,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).json(updatedProduct);
+});
+
+
+
+
+  module.exports = {createProduct, getProduct, getSingleProduct, deleteSingleProduct,updateProduct}
