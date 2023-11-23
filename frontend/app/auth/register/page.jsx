@@ -1,17 +1,21 @@
 "use client"
-import { registerUser } from '@/app/services/authService';
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { SET_USERNAME } from '@/Redux/Slices/authSlice';
 
 export default function Register() {
   const router = useRouter()
+  const dispatch = useDispatch()
 
   const initialState = {
     name: "",
     email: "",
     password: ""  }
 
-const [formData, setFormData] = useState(initialState);
+
+    const [formData, setFormData] = useState(initialState);
 const { email, password, name} = formData
 
 
@@ -32,15 +36,18 @@ async function  formSubmit(e)
   }
   
 
-try {
-  const data = await registerUser(formData)
-  console.log(data);
-  router.push("/productDashboard")
-  
-} catch (error) {
+  try {
+    console.log(formData);
+     const response = await axios.post(`http://localhost:8000/api/users/register`, formData, {withCredentials: true})
+     router.push("/productDashboard")
+     dispatch(SET_USERNAME(response.data.name))
+
+     return response.data
+
+ } catch (error) {
+
   console.log(error);
-}
-}
+}}
 
   return (
     <div className="bg-black h-[calc(100vh-64px)] flex items-center justify-center">

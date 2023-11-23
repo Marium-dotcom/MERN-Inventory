@@ -131,7 +131,7 @@ if(user && passwordIsCorrect){
 
 }else{
   res.status(400)
-  throw new Error("err err")
+  throw new Error("Incorrect password")
 }
   }
 

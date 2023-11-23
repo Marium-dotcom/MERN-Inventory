@@ -1,16 +1,13 @@
 "use client"
 import { createSlice } from "@reduxjs/toolkit"
 
-let name
 
-if (typeof window !== "undefined") {
-name = JSON.parse(localStorage.getItem("name")) || ""
-}
+
 const initialState = {
     isLoggedIn: false,
-    name: name ? name : "",
+    name:  null ,
     user: {
-        name: "",
+        name:"",
         email:"",
         phone:"",
         bio:"",
@@ -29,7 +26,6 @@ const authSlice = createSlice({
         },
 
         SET_USERNAME(state,action){
-            localStorage.setItem('name', JSON.stringify(action.payload));
             state.name = action.payload
     },
     SET_USER(state,action){
