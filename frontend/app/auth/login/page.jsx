@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-import { SET_USERNAME } from '@/Redux/Slices/authSlice'
+import { SET_LOGIN, SET_USERNAME } from '@/Redux/Slices/authSlice'
 import { useDispatch } from 'react-redux'
 
 export default function Login() {
@@ -33,6 +33,10 @@ try {
    const response = await axios.post(`http://localhost:8000/api/users/login`, login, {withCredentials: true})
    console.log("test res", JSON.stringify(response, null, 2));
    console.log("test name", response.data.name);
+   localStorage.setItem("isLoggedIn", true)
+
+   await dispatch(SET_LOGIN(true))
+
    dispatch(SET_USERNAME(response.data.name))
 localStorage.setItem("name", response.data.name)
 if(response.status === 200){

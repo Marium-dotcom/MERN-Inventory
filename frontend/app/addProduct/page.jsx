@@ -1,8 +1,11 @@
 "use client"
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const AddProductForm = () => {
+  const router = useRouter()
+
   const [product, setProduct] = useState({
     name: '',
     sku: '',
@@ -17,26 +20,30 @@ const AddProductForm = () => {
     e.preventDefault();
 
     // Perform any additional logic here, such as validating the form data or submitting to a server
-    // const add = await axios.post(
-    //   'http://localhost:8000/api/createProduct',
-    //   product,
-    //   {
-    //     headers: {
-    //       'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NTdkMDFhMzVkMDNhMDAxNTJkYmVlNiIsImlhdCI6MTcwMDYyMDIzNCwiZXhwIjoxNzAwNzA2NjM0fQ.RDgds3FnJR1mAWDzTp_EqlctmZXPo-fXWVpgxH0ntqE',
-    //       'Content-Type': 'application/json',
-    //     },
-    //   }
-    // );
+    const response = await axios.post(
+      'http://localhost:8000/api/createProduct',
+      product, {
+        withCredentials: true,
+      }
+
+    );
+
+    if(response.status === 201){
+      router.push("/productDashboard")
+    }
+
         // Reset the form fields after submission
-  //   setProduct({
-  //     name: '',
-  //     sku: '',
-  //     category: '',
-  //     quantity: 0,
-  //     price: 0,
-  //     description: '',
-  //     images: [],
-  //   });
+    setProduct({
+      name: '',
+      sku: '',
+      category: '',
+      quantity: 0,
+      price: 0,
+      description: '',
+      images: [],
+    });
+        return response.data;
+
  };
 
   const handleInputChange = (e) => {

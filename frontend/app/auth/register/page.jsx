@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { SET_USERNAME } from '@/Redux/Slices/authSlice';
+import { SET_LOGIN, SET_USERNAME } from '@/Redux/Slices/authSlice';
 
 export default function Register() {
   const router = useRouter()
@@ -41,6 +41,9 @@ async function  formSubmit(e)
      const response = await axios.post(`http://localhost:8000/api/users/register`, formData, {withCredentials: true})
      router.push("/productDashboard")
      dispatch(SET_USERNAME(response.data.name))
+     localStorage.setItem("isLoggedIn", true)
+
+     await dispatch(SET_LOGIN(true))
 
      return response.data
 

@@ -1,25 +1,35 @@
 "use client"
-import { SET_LOGIN, SET_USERNAME, selectName } from '@/Redux/Slices/authSlice';
+import { SET_LOGIN, SET_USERNAME, selectIsLoggedIn, selectName } from '@/Redux/Slices/authSlice';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import AuthInitializer from './AuthInitializer';
+import { getCookie } from 'cookies-next';
 
 export default function Nav() {
   const dispatch = useDispatch()
   const router = useRouter()
-
+  const isLoggedIn = useSelector(selectIsLoggedIn)
   const name = useSelector(selectName);
+  console.log(isLoggedIn);
 
-async function logout(){
+
+  
+  async function logout(){
   try {
-      await axios.get("http://localhost:8000/api/users/logout")
+    await axios.get("http://localhost:8000/api/users/logout", {
+      withCredentials: true,
+    });
   await dispatch(SET_LOGIN(false))
   dispatch(SET_USERNAME(""))
+  localStorage.setItem("isLoggedIn", false)
+  localStorage.removeItem("name")
 
   router.push("/")
+  return response.data;
+
 
   } catch (error) {
     console.log(error);
@@ -42,7 +52,7 @@ return (
             {/* Add your navigation links here */}
             <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
             <Link href={"/addProduct"} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Add Product</Link>
-            <button onClick={logout}  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">logout</button>
+      {isLoggedIn? <button onClick={logout}  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">logout</button> :""}     
             {name && (
             <span className="text-white">Hi {name}</span>
           )}
