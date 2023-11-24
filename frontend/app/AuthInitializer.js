@@ -16,8 +16,9 @@ const AuthInitializer = ({ children }) => {
       if (userFromLocalStorage) {
 dispatch(SET_USERNAME(userFromLocalStorage));
       }
-
-      dispatch(SET_LOGIN(loggedStatus))
+if(loggedStatus){     
+   dispatch(SET_LOGIN(loggedStatus))
+}
 
     }
   }, [dispatch]);

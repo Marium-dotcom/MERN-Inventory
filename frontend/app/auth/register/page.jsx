@@ -41,7 +41,7 @@ async function  formSubmit(e)
      const response = await axios.post(`http://localhost:8000/api/users/register`, formData, {withCredentials: true})
      router.push("/productDashboard")
      dispatch(SET_USERNAME(response.data.name))
-     localStorage.setItem("isLoggedIn", true)
+     localStorage.setItem("name", response.data.name)
 
      await dispatch(SET_LOGIN(true))
 

@@ -33,12 +33,13 @@ try {
    const response = await axios.post(`http://localhost:8000/api/users/login`, login, {withCredentials: true})
    console.log("test res", JSON.stringify(response, null, 2));
    console.log("test name", response.data.name);
-   localStorage.setItem("isLoggedIn", true)
 
-   await dispatch(SET_LOGIN(true))
 
    dispatch(SET_USERNAME(response.data.name))
 localStorage.setItem("name", response.data.name)
+localStorage.setItem("isLoggedIn", true)
+   await dispatch(SET_LOGIN(true))
+
 if(response.status === 200){
   router.push("/productDashboard")
 }
