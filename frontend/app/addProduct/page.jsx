@@ -1,10 +1,13 @@
 "use client"
+import { selectIsLoggedIn } from '@/Redux/Slices/authSlice';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const AddProductForm = () => {
   const router = useRouter()
+  const isLoggedIn = useSelector(selectIsLoggedIn)
 
   const [product, setProduct] = useState({
     name: '',
@@ -65,6 +68,8 @@ const AddProductForm = () => {
   console.log(product);
 
   return (
+    <>
+    {isLoggedIn?
     <div className="bg-black h-[calc(100vh-64px)] flex flex-col justify-center items-center text-white">
       <h2 className="text-2xl font-bold mb-4">Add Product</h2>
 
@@ -169,7 +174,7 @@ const AddProductForm = () => {
           Add Product
         </button>
       </form>
-    </div>
+    </div>: <h1 className='bg-black h-[calc(100vh-64px)] flex flex-col justify-center items-center text-white'>PLEASE LOGIN</h1>}</>
   );
 };
 
