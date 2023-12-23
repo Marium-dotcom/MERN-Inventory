@@ -2,11 +2,15 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-import { SET_LOGIN, SET_USERNAME } from '@/Redux/Slices/authSlice'
-import { useDispatch } from 'react-redux'
+import { SET_LOGIN, SET_USERNAME, selectIsLoggedIn } from '@/Redux/Slices/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function Login() {
   const router = useRouter()
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  // if(isLoggedIn){
+  //   router.push('/')
+  //     }
 const dispatch = useDispatch()
   const initialState = {
     email: "",
@@ -53,8 +57,10 @@ if(response.status === 200){
 }
 
   return (
+
     <div className="bg-black h-[calc(100vh-64px)] flex items-center justify-center">
-    <div className="bg-white p-8 rounded-md shadow-lg">
+  {!isLoggedIn?   
+   <div className="bg-white p-8 rounded-md shadow-lg">
       <h2 className="text-2xl text-center mb-6">Login</h2>
       <form onSubmit={(e)=>handleSubmit(e)}>
         <div className="mb-4">
@@ -75,6 +81,7 @@ if(response.status === 200){
           </button>
         </div>
       </form>
-    </div>
+    </div> : null
+} 
   </div>  )
 }

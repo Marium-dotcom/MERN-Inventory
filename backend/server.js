@@ -8,8 +8,8 @@ const userRoute = require("./routes/userRoute");
 const errorHandler = require("./middleware/errorMiddleware");
 const authMiddleware = require("./middleware/authMiddleware");
 const productRoute = require("./routes/productRoute")
-const app = express();
 const path = require("path");
+const app = express();
 
 // Middlewares
 app.use(express.json());

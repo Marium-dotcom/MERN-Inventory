@@ -62,8 +62,8 @@ res.status(201).json(product)
 //get product
 const getProduct = asyncHandler(async(req, res, next)=>{
     const product = await Product.find({user: req.user.id})
-    console.log(product);
-    console.log(req.user.id);
+    // console.log(product);
+    // console.log(req.user.id);
     
 
     if(!product){

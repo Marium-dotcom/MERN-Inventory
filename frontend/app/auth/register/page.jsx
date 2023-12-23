@@ -2,13 +2,17 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { SET_LOGIN, SET_USERNAME } from '@/Redux/Slices/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_LOGIN, SET_USERNAME, selectIsLoggedIn } from '@/Redux/Slices/authSlice';
 
 export default function Register() {
   const router = useRouter()
   const dispatch = useDispatch()
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
+//   if(isLoggedIn){
+// router.push('/')
+//   }
   const initialState = {
     name: "",
     email: "",
@@ -54,6 +58,7 @@ async function  formSubmit(e)
 
   return (
     <div className="bg-black h-[calc(100vh-64px)] flex items-center justify-center">
+      {!isLoggedIn?
       <div className="bg-white p-8 rounded-md shadow-lg">
         <h2 className="text-2xl text-center mb-6">Register</h2>
         <form onSubmit={(e)=>formSubmit(e)}>
@@ -82,7 +87,7 @@ async function  formSubmit(e)
             </button>
           </div>
         </form>
-      </div>
+      </div>:""}
     </div>
   )
 }

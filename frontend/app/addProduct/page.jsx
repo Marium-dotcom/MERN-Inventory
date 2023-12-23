@@ -19,35 +19,49 @@ const AddProductForm = () => {
     images: [],
   });
 
-  const  handleFormSubmit = async(e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    // Perform any additional logic here, such as validating the form data or submitting to a server
-    const response = await axios.post(
-      'http://localhost:8000/api/createProduct',
-      product, {
-        withCredentials: true,
-      }
-
-    );
-
-    if(response.status === 201){
-      router.push("/productDashboard")
+  
+    const formData = new FormData();
+    formData.append('name', product.name);
+    formData.append('sku', product.sku);
+    formData.append('category', product.category);
+    formData.append('quantity', product.quantity);
+    formData.append('price', product.price);
+    formData.append('description', product.description);
+  
+    // Append images to formData
+    for (let i = 0; i < product.images.length; i++) {
+      formData.append('images', product.images[i]);
     }
-
-        // Reset the form fields after submission
-    setProduct({
-      name: '',
-      sku: '',
-      category: '',
-      quantity: 0,
-      price: 0,
-      description: '',
-      images: [],
-    });
-        return response.data;
-
- };
+  
+    try {
+      const response = await axios.post('http://localhost:8000/api/createProduct', formData, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data', 
+        },
+      });
+  
+      if (response.status === 201) {
+        router.push('/productDashboard');
+      }
+  
+      // Reset the form fields after submission
+      setProduct({
+        name: '',
+        sku: '',
+        category: '',
+        quantity: 0,
+        price: 0,
+        description: '',
+        images: [],
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

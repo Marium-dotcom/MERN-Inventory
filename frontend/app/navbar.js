@@ -48,7 +48,9 @@ return (
           </div>
           <div className="flex">
             {/* Add your navigation links here */}
-            <Link href={"/"} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</Link>
+            <Link className=' text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium' href={"/productDashboard"}> <button> Dashboard  </button>  </Link>    
+
+            {/* <Link href={"/"} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</Link> */}
             {isLoggedIn && ( <Link href={"/addProduct"} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Add Product</Link>)}
             {isLoggedIn && (
   <button onClick={logout} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">logout</button>
@@ -56,6 +58,7 @@ return (
             {name && (
             <span className="text-white">Hi {name}</span>
           )}
+
           </div>
         </div>
       </div>
