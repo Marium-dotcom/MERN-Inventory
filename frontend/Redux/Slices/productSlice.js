@@ -32,6 +32,19 @@ export const getProduct = createAsyncThunk(
       }
     }
   );
+
+  export const deleteProduct = createAsyncThunk(
+    'products/deleteProduct', 
+    async (id, thunkAPI) => {
+      try {
+        const response = await axios.delete(`http://localhost:8000/api/deleteProduct/${id}` ,{
+          withCredentials: true });
+        return response.data;  
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+    }
+  );
   
 
   export const productsSlice = createSlice({
