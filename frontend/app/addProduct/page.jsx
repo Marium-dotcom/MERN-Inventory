@@ -1,11 +1,15 @@
 "use client"
 import { selectIsLoggedIn } from '@/Redux/Slices/authSlice';
+import { postProduct } from '@/Redux/Slices/productSlice';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const AddProductForm = () => {
+  const dispatch = useDispatch();
+
   const router = useRouter()
   const isLoggedIn = useSelector(selectIsLoggedIn)
 
@@ -36,17 +40,8 @@ const AddProductForm = () => {
     }
   
     try {
-      const response = await axios.post('http://localhost:8000/api/createProduct', formData, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'multipart/form-data', 
-        },
-      });
-  
-      if (response.status === 201) {
-        router.push('/productDashboard');
-      }
-  
+      dispatch(postProduct(formData))
+      .then(data => {
       // Reset the form fields after submission
       setProduct({
         name: '',
@@ -57,6 +52,12 @@ const AddProductForm = () => {
         description: '',
         images: [],
       });
+      })
+      .catch(err => {
+console.log(err);      });
+  
+  
+  
     } catch (error) {
       console.error('Error submitting form:', error);
     }
