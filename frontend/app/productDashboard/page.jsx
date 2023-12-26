@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct, getProduct, getProductStatus, selectAllProducts } from '@/Redux/Slices/productSlice';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ export default function Dashboard() {
             <p className="text-gray-300">Description: {product.description}</p>
             <p className="text-gray-300">Price: ${product.price}</p>         <button className="text-gray-300" onClick={()=>delProduct(product._id)}>delete</button>
 
+            <Link href={`./editProduct/${product._id}`} className="text-gray-300 block" >Edit</Link>
             {/* Add image rendering logic here */}
             <Image width={400} height={400}  src={product.images[0].filePath} alt={product.name} className="mt-2 rounded-md" />
           </div>
@@ -42,5 +44,4 @@ export default function Dashboard() {
     );
   }
 
-  return <div className="bg-black text-white p-4">hi</div>;
 }
