@@ -66,6 +66,13 @@ useEffect(() => {
       images: Array.from(files),
     }));
   };
+  const handleOutOfStockClick = () => {
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      quantity: 0,
+    }));
+  };
+
 
     return (
       
@@ -75,6 +82,7 @@ useEffect(() => {
    product={product}
    handleImageChange={handleImageChange}
    type={"edit"}
+   handleOutOfStockClick={handleOutOfStockClick}
 />
       </>
     );

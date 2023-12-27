@@ -1,6 +1,7 @@
 import React from 'react';
 
-const ProductForm = ({handleFormSubmit,handleImageChange, handleInputChange, product, type}) => {
+const ProductForm = ({handleFormSubmit,handleImageChange, handleInputChange, product, type,  handleOutOfStockClick
+}) => {
 
 
 
@@ -106,6 +107,11 @@ const ProductForm = ({handleFormSubmit,handleImageChange, handleInputChange, pro
             onChange={handleImageChange}
           />
         </div>
+     
+     {type === "edit"?  <button className="bg-indigo-500 text-white rounded-lg py-2 px-4 hover:bg-indigo-600" type="button" onClick={handleOutOfStockClick}>
+        Out of Stock
+      </button>: null} 
+
 
         <button className="bg-indigo-500 text-white rounded-lg py-2 px-4 hover:bg-indigo-600">
         {type}        </button>

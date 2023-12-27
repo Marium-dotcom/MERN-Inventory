@@ -88,7 +88,6 @@ export const getProduct = createAsyncThunk(
       status: 'idle' ,// idle | loading | succeeded | failed,
       totalStoreValue: 0,
       
-      
     },reducers:{
       CALC_TOTAL_VALUE(state, action) {
         const products = action.payload;
@@ -109,7 +108,6 @@ export const getProduct = createAsyncThunk(
       
         state.totalStoreValue = totalValue;
       },
-      
 
     }, 
     extraReducers: {
@@ -137,5 +135,6 @@ export const getProduct = createAsyncThunk(
   export const getProductStatus = state => state.products.status
   export const selectTotalPrice = state => state.products.totalStoreValue;
 
+  
 
   
