@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProductForm = ({handleFormSubmit,handleImageChange, handleInputChange, product}) => {
+const ProductForm = ({handleFormSubmit,handleImageChange, handleInputChange, product, type}) => {
 
 
 
@@ -8,7 +8,7 @@ const ProductForm = ({handleFormSubmit,handleImageChange, handleInputChange, pro
   return (
     <>
     <div className="bg-black h-[calc(100vh-64px)] flex flex-col justify-center items-center text-white">
-      <h2 className="text-2xl font-bold mb-4">Add Product</h2>
+      <h2 className="text-2xl font-bold mb-4">{type} Product</h2>
 
       <form className="max-w-md" onSubmit={handleFormSubmit}>
         <div>
@@ -108,8 +108,7 @@ const ProductForm = ({handleFormSubmit,handleImageChange, handleInputChange, pro
         </div>
 
         <button className="bg-indigo-500 text-white rounded-lg py-2 px-4 hover:bg-indigo-600">
-          Add Product
-        </button>
+        {type}        </button>
       </form>
     </div></>
   );

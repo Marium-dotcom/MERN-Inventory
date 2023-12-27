@@ -88,7 +88,9 @@ export const getProduct = createAsyncThunk(
       status: 'idle' ,// idle | loading | succeeded | failed
       
       
-    },
+    },reducers:{
+
+    }, 
     extraReducers: {
       [getProduct.pending]: (state) => {
         state.status = 'loading';
@@ -111,5 +113,4 @@ export const getProduct = createAsyncThunk(
 
   export const selectAllProducts = state => state.products.items;
   export const selectProduct = state => state.products.item;
-
-export const getProductStatus = state => state.products.status
+  export const getProductStatus = state => state.products.status

@@ -93,6 +93,7 @@ console.log(err);      });
    handleImageChange={handleImageChange}
    handleInputChange={handleInputChange}
    product={product}
+   type={"add"}
    
    />
    : <h1 className='bg-black h-[calc(100vh-64px)] flex flex-col justify-center items-center text-white'>PLEASE LOGIN</h1>}</>

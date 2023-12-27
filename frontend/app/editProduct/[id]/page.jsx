@@ -1,5 +1,5 @@
 "use client"
-import { getProduct, selectAllProducts, editProduct, getSingleProduct, selectProduct } from '@/Redux/Slices/productSlice';
+import {  editProduct, getSingleProduct, selectProduct } from '@/Redux/Slices/productSlice';
 import ProductForm from '@/app/productForm/page';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -18,7 +18,7 @@ const edtProduct = () => {
 // console.log(product);
 useEffect(() => {
   // Update the local state when the productEdit changes
-  setProduct(productEdit || {name: "",sku:"",category: "",quantity: "",price: "", description:"" } );
+  setProduct(productEdit || {name: "",sku:"",category: "",quantity: "",price: "", description:"", images: [] } );
 }, [productEdit]);
 
 
@@ -74,6 +74,7 @@ useEffect(() => {
    handleInputChange={handleInputChange}
    product={product}
    handleImageChange={handleImageChange}
+   type={"edit"}
 />
       </>
     );
