@@ -85,10 +85,31 @@ export const getProduct = createAsyncThunk(
     initialState: {
       items: [],
       item:  null,
-      status: 'idle' ,// idle | loading | succeeded | failed
+      status: 'idle' ,// idle | loading | succeeded | failed,
+      totalStoreValue: 0,
       
       
     },reducers:{
+      CALC_TOTAL_VALUE(state, action) {
+        const products = action.payload;
+      console.log(action.payload);
+        const array = [];
+      
+        products.map((item) => {
+          const { price, quantity } = item;
+          let q = Number(quantity)
+          const productValue = price * q ;
+      
+          return array.push(productValue);
+        });
+      
+        const totalValue = array.reduce((a, b) => {
+          return a + b;
+        }, 0);
+      
+        state.totalStoreValue = totalValue;
+      },
+      
 
     }, 
     extraReducers: {
@@ -110,7 +131,11 @@ export const getProduct = createAsyncThunk(
     }
   })
 
-
+  export const {CALC_TOTAL_VALUE} = productsSlice.actions
   export const selectAllProducts = state => state.products.items;
   export const selectProduct = state => state.products.item;
   export const getProductStatus = state => state.products.status
+  export const selectTotalPrice = state => state.products.totalStoreValue;
+
+
+  

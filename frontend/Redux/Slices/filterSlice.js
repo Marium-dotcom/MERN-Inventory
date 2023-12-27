@@ -28,9 +28,9 @@ const initialState = {
             const { products, search } = action.payload;
             let tempProducts = products.filter(
               (product) =>
-                product.name.includes(search) ||
-                product.category.includes(search)
-            );
+              product.name.toLowerCase().includes(search.toLowerCase()) ||
+              product.category.toLowerCase().includes(search.toLowerCase())
+                );
       
             state.filteredProducts = tempProducts;
           },

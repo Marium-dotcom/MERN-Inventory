@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteProduct, getProduct, getProductStatus, selectAllProducts } from '@/Redux/Slices/productSlice';
+import { CALC_TOTAL_VALUE, deleteProduct, getProduct, getProductStatus, selectAllProducts, selectTotalPrice } from '@/Redux/Slices/productSlice';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FILTER_BY_CATEGORY, FILTER_BY_SEARCH, selectFilteredPoducts } from '@/Redux/Slices/filterSlice';
@@ -14,9 +14,8 @@ const filteredProducts = useSelector(selectFilteredPoducts);
   useEffect(() => {
     dispatch(getProduct());
   }, [dispatch]);
-
-
-
+  
+  const totalValue = useSelector(selectTotalPrice)
   const delProduct = async (id) => {
     console.log(id);
     await dispatch(deleteProduct(id));
@@ -26,6 +25,9 @@ const filteredProducts = useSelector(selectFilteredPoducts);
 
 function  handleFilteredPoducts(category){
 dispatch(FILTER_BY_CATEGORY({products,category})) 
+ console.log(totalValue );
+ console.log(products);
+
  }
 
  function  handleSearchPoducts(e){
@@ -37,9 +39,18 @@ dispatch(FILTER_BY_CATEGORY({products,category}))
  useEffect(() => {
  // "All" as the default category
   dispatch(FILTER_BY_CATEGORY({ products, category: "All" }));
+  // console.log(Number(products[0]?.quantity))
+
 }, [dispatch, products]); 
 
+useEffect(() => {
+dispatch(CALC_TOTAL_VALUE(products))
+
+}, [dispatch,products]);
+
   const categories = ["All", ...Array.from(new Set(products.map(item => item.category)))];
+  const catLength = categories.length -1 // minus the "All" 
+  console.log(catLength);
 console.log(categories);
   if (status === 'loading') {
     return <div className="bg-black text-white p-4">Loading...</div>;
@@ -64,6 +75,9 @@ console.log(categories);
       <div className="bg-black text-white p-4">
         <p>{categories.map((category, index) =><button key={index} className='block' onClick={()=>handleFilteredPoducts(category)}>{category}</button> )}</p>
      <input className=' text-black' onChange={(e)=>handleSearchPoducts(e)} type="text" />
+     <p className=' text-white'>Total value {totalValue}</p>
+     <p className=' text-white'>No of categories {catLength}</p>
+
       </div>
       </main>
     );

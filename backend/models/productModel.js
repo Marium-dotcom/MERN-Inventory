@@ -22,7 +22,7 @@ const productSchema = mongoose.Schema({
     trim: true // trim the spaces
   },
   quantity: {
-    type: String,
+    type: Number,
     required: true,
     trim: true // trim the spaces
 
