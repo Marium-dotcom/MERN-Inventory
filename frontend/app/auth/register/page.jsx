@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { SET_LOGIN, SET_USERNAME, selectIsLoggedIn } from '@/Redux/Slices/authSlice';
+import { SET_LOGIN, SET_USER, SET_USERNAME, selectIsLoggedIn, selectUser } from '@/Redux/Slices/authSlice';
 
 export default function Register() {
   const router = useRouter()
@@ -17,7 +17,6 @@ export default function Register() {
     name: "",
     email: "",
     password: ""  }
-
 
     const [formData, setFormData] = useState(initialState);
 const { email, password, name} = formData
@@ -48,7 +47,7 @@ async function  formSubmit(e)
      localStorage.setItem("name", response.data.name)
 
      await dispatch(SET_LOGIN(true))
-
+     dispatch(SET_USER(response.data))
      return response.data
 
  } catch (error) {

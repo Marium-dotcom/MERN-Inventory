@@ -11,7 +11,8 @@ const initialState = {
         email:"",
         phone:"",
         bio:"",
-        photo:""
+        photo:"",
+        _id: ""
     }
 }
 const authSlice = createSlice({
@@ -29,12 +30,13 @@ const authSlice = createSlice({
             state.name = action.payload
     },
     SET_USER(state,action){
-        const {name,email,phone, bio,photo} = action.payload
+        const {name,email,phone, bio,photo, _id} = action.payload
         state.user.name = name
         state.user.email = email
         state.user.phone = phone
         state.user.bio = bio
         state.user.photo = photo
+        state.user._id = _id
     }
 }
 })

@@ -1,5 +1,5 @@
 "use client"
-import { SET_LOGIN, SET_USERNAME, selectIsLoggedIn, selectName } from '@/Redux/Slices/authSlice';
+import { SET_LOGIN, SET_USER, SET_USERNAME, selectIsLoggedIn, selectName, selectUser } from '@/Redux/Slices/authSlice';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -12,8 +12,11 @@ export default function Nav() {
   const router = useRouter()
   const isLoggedIn = useSelector(selectIsLoggedIn)
   const name = useSelector(selectName);
-
-
+  let id
+  if (typeof localStorage !== 'undefined') {
+     id = localStorage.getItem('id');
+  }   
+console.log(id);
   
   async function logout(){
   try {
@@ -24,6 +27,7 @@ export default function Nav() {
   dispatch(SET_USERNAME(""))
   localStorage.removeItem("isLoggedIn")
   localStorage.removeItem("name")
+  localStorage.removeItem("id")
 
   router.push("/")
   return response.data;
@@ -56,7 +60,7 @@ return (
   <button onClick={logout} className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">logout</button>
 )}
             {name && (
-            <span className="text-white">Hi {name}</span>
+            <Link href={`profile/${id}`} className="text-white">{name}</Link>
           )}
 
           </div>

@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-import { SET_LOGIN, SET_USERNAME, selectIsLoggedIn } from '@/Redux/Slices/authSlice'
+import { SET_LOGIN, SET_USER, SET_USERNAME, selectIsLoggedIn } from '@/Redux/Slices/authSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
 export default function Login() {
@@ -41,12 +41,14 @@ try {
 
    dispatch(SET_USERNAME(response.data.name))
 localStorage.setItem("name", response.data.name)
+localStorage.setItem("id", response.data._id)
 localStorage.setItem("isLoggedIn", true)
    await dispatch(SET_LOGIN(true))
 
 if(response.status === 200){
   router.push("/productDashboard")
 }
+dispatch(SET_USER(response.data))
 
    return response.data
 } catch (error) {
