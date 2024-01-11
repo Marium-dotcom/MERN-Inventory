@@ -10,12 +10,13 @@ const edtProduct = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const productEdit = useSelector(selectProduct);
+    console.log(productEdit);
     const [product, setProduct] = useState(productEdit || {name: "",sku:"",category: "",quantity: "",price: "", description:"" ,     images: [],
   } );
     const router = useRouter()
 
 
-// console.log(product);
+console.log(product);
 useEffect(() => {
   // Update the local state when the productEdit changes
   setProduct(productEdit || {name: "",sku:"",category: "",quantity: "",price: "", description:"", images: [] } );

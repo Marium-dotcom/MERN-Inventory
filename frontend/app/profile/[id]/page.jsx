@@ -1,37 +1,39 @@
-import React from 'react';
-import { cookies } from "next/headers";
+"use client"
+import { getUserData, selectUser } from '@/Redux/Slices/authSlice';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-async function getUserProfile(){
-    let res =   await fetch(`http://localhost:8000/api/users/getUser`, {  
-        headers: { Cookie: cookies()},
+const Profile = () => {
+  const dispatch = useDispatch()
+  const user = useSelector(selectUser)
+const {id} = useParams()
+console.log(id);
+useEffect(() => {
+  
+  dispatch(getUserData())
+  
+}, [dispatch]);
 
- } );
-        return await res.json();
-   }
+// useEffect(() => {
+//   // Update the local state when the productEdit changes
+//   setProduct(productEdit || {name: "",sku:"",category: "",quantity: "",price: "", description:"", images: [] } );
+// }, [productEdit]);
 
-
-
-
-
-const Profile = async () => {
-
-const data = await getUserProfile();
-console.log("User :", data);
-return (
-    <div className="bg-black text-white p-4">
-    <h1 className="text-2xl font-bold mb-4">User Profile</h1>
-    {data && (
-      <div>
-        <p>Name: {data.name}</p>
-        <p>Email: {data.email}</p>
-        <img src={data.photo} alt="User Photo" className="w-32 h-32 rounded-full my-2" />
-        <p>Phone: {data.phone}</p>
-        <p>Bio: {data.bio}</p>
-      </div>
-    )}
-  </div>
-
-    );
-}
+  return (
+    <div className="bg-black h-screen text-white p-8">
+      {user.photo && (
+        <Image width={300} height={300} src={user.photo} alt={user.name} className="rounded-full w-20 h-20 mb-4" />
+      )}
+      <h1 className="text-2xl font-bold mb-2">{user.name}</h1>
+      <p className="text-sm mb-2">{user.email}</p>
+      <p className="text-sm mb-2">{user.phone}</p>
+      <p className="text-sm mb-4">{user.bio}</p>
+      <button><Link href={`./update/${id}`}>edit</Link> </button>
+    </div>
+  );
+};
 
 export default Profile;

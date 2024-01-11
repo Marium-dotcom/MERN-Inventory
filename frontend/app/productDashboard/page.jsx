@@ -55,7 +55,7 @@ dispatch(CALC_TOTAL_VALUE(products))
 }, [dispatch,products]);
 
 
-  const categories = ["All", ...Array.from(new Set(products.map(item => item.category)))];
+  const categories = ["All", ...Array.from(new Set(products.map(item => item.category)))] || [""]
   const catLength = categories.length -1 // minus the "All" 
   console.log(catLength);
 console.log(categories);
